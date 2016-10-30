@@ -1,0 +1,91 @@
+---
+title: "What is an R Markdown"
+author: "Jill Marzolino"
+date: "October 4, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Problem 2: Calculating Fst
+
+Load the file combined_YRICEU.txt as shown below, which contains both the CEU and YRI genotype counts
+for each SNP.
+
+```{r}
+library(eve102)
+d_comb <- read.table(eve102_data("combined_YRICEU.txt"), header=TRUE)
+head(d_comb)
+```
+
+###Question 1:
+With this data, calculate the mean expected heterozygosity (i.e. from allele frequencies) in
+European and African samples (CEU and YRI, respectively) separately.
+
+CEU
+```{r}
+freqs_CEUA <- (d_comb$AA_CEU+d_comb$Aa_CEU/2)/d_comb$total_CEU
+freqs_CEUa <- (d_comb$aa_CEU+d_comb$Aa_CEU/2)/d_comb$total_CEU
+Hs_CEU <- mean(2*(freqs_CEUA)*(freqs_CEUa))
+```
+
+YRI
+```{r}
+freqs_YRIA <- (d_comb$AA_YRI+d_comb$Aa_YRI/2)/d_comb$total_YRI
+freqs_YRIa <- (d_comb$aa_YRI+d_comb$Aa_YRI/2)/d_comb$total_YRI
+Hs_YRI <- mean(2*(freqs_YRIA)*(freqs_YRIa))
+```
+
+###Question 2:
+Calculate Fst for the European population relative to the combined frequency. 
+average heterozygosity across loci and calculate Fst
+
+Total Heterozygosity
+
+find allele freq of ceu (p1 and q1) find allele freq of combined (pt and qt), then divide ps and qs by 2 and then do 2pq
+average ps and qs
+```{r}
+p_tot <- (freqs_YRIA)+(freqs_CEUA)/2
+q_tot <- (freqs_YRIa)+(freqs_CEUa)/2
+H_tot <- mean(2*q_tot*p_tot)
+```
+
+
+Fst for CEU
+```{r}
+Fst_CEU <-1-(Hs_CEU/H_tot)
+Fst_CEU
+```
+
+
+###Question 3:
+Calculate Fst for the African population relative to the combined frequency.
+
+Fst for YRI
+```{r}
+Fst_YRI <- 1-(Hs_YRI/H_tot)
+Fst_CEU
+```
+
+
+###Question 4: 
+Take the average of these two Fsts.
+
+```{r}
+Fst_comb <- (Fst_CEU+Fst_YRI)/2
+Fst_comb
+```
+
+###Question 5: 
+Your calculated Fst is the inbreeding coefficient, giving the average reduction of heterozygosity in the sub-populations relative to the total population. 
+The expected proportion of heterozygotes with inbreeding is given by the generalized Hardy-Weinberg equation (equation 3, page 9 in the course notes: [(1-F)2pq].
+Using the generalized Hardy-Weinberg equilibrium, and your calculated Fst,
+plot a line for the expected number of heterozygotes as a function of the allele frequency 
+x=combined freq of AA, y=expected het (gen_HW)
+```{r}
+Fst_comb
+gen_HW <- (1-Fst_comb)*2*p_tot*q_tot
+plot(p_tot,gen_HW,pch=18,cex=0.5,col="green",xlim=c(0,1.55),ylim=c(0,0.6),xlab="allele frequency",ylab="expected heterozygotes")
+```

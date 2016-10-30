@@ -1,0 +1,186 @@
+---
+title: "Homework 1"
+author: "Jill Marzolino"
+date: "October 1, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Problem 1: Hardy-Weinberg Plots
+
+```{r}
+library(eve102)
+eve102_data()
+d_ceu <- read.table(eve102_data("CEU_10000.txt.gz"), header=TRUE)
+d_yri <- read.table(eve102_data("YRI_10000.txt.gz"), header=TRUE)
+d_ceu_yri <- read.table(eve102_data("CEU_YRI_10000.txt.gz"), header=TRUE)
+```
+
+Question 1: 
+Calculate the frequencies of all genotypes for CEU (d_ceu), YRI (d_yri), and both populations (CEU and YRI, d_ceu_yri).
+
+```{r}
+d_ceu$AA_freq <- d_ceu$AA/d_ceu$total
+d_ceu$Aa_freq <- d_ceu$Aa/d_ceu$total
+d_ceu$aa_freq <- d_ceu$aa/d_ceu$total
+d_yri$AA_freq <- d_yri$AA/d_yri$total
+d_yri$Aa_freq <- d_yri$Aa/d_yri$total
+d_yri$aa_freq <- d_yri$aa/d_yri$total
+d_ceu_yri$AA_freq <- d_ceu_yri$AA/d_ceu_yri$total
+d_ceu_yri$Aa_freq <- d_ceu_yri$Aa/d_ceu_yri$total
+d_ceu_yri$aa_freq <- d_ceu_yri$aa/d_ceu_yri$total
+```
+
+Question 2:
+For each genotype (AA, Aa, and aa), plot the genotype frequency (calculated in last question)on the y-axis, and the allele frequency on the x-axis for the CEU dataset. To distinguish the different genotypes, plot the AA homozygote frequency in green, the heterozygote frequency in blue, and the aa homozygote frequency in red.
+After doing this for the CEU dataset, do this for the YRI dataset, and the combined YRI and CEU datasets.
+
+CEU [pure colors]
+
+```{r}
+plot(d_ceu$freq,d_ceu$AA_freq,pch=18,cex=0.5,col="forestgreen",xlim=c(0,1),ylim=c(0,1),xlab="allele frequency",ylab="genotype frequency")
+points(d_ceu$freq,d_ceu$Aa_freq,pch=18,cex=0.5,col="blue")
+points(d_ceu$freq,d_ceu$aa_freq,pch=18,cex=0.5,col="red")
+```
+
+YRI [deep colors]
+
+```{r}
+plot(d_yri$freq,d_yri$AA_freq,pch=18,cex=0.5,col="darkolivegreen4",xlim=c(0,1),ylim=c(0,1),xlab="allele frequency",ylab="genotype frequency")
+points(d_yri$freq,d_yri$Aa_freq,pch=18,cex=0.5,col="royalblue")
+points(d_yri$freq,d_yri$aa_freq,pch=18,cex=0.5,col="indianred")
+```
+
+YRI and CEU [bright colors]
+
+```{r}
+plot(d_ceu_yri$freq,d_ceu_yri$AA_freq,pch=18,cex=0.5,col="green",xlim=c(0,1),ylim=c(0,1),xlab="allele frequency",ylab="genotype frequency")
+points(d_ceu_yri$freq,d_ceu_yri$Aa_freq,pch=18,cex=0.5,col="cyan")
+points(d_ceu_yri$freq,d_ceu_yri$aa_freq,pch=18,cex=0.5,col="coral")
+```
+
+Question 3:
+Use the lowess() function to create a smoothed line for each of the genotype-allele frequency plots above. Adjusting the f parameter of lowess() adjusts the size of this window, and thus affects how much smoothing there is (f=1/5 is a good value). Using the x and y values returned by lowess(), add lines to your plot above for the AA, Aa, and aa genotypes.
+
+CEU
+```{r}
+plot(d_ceu$freq,d_ceu$AA_freq,pch=18,cex=0.5,col="forestgreen",xlim=c(0,1),ylim=c(0,1),xlab="allele frequency",ylab="genotype frequency")
+points(d_ceu$freq,d_ceu$Aa_freq,pch=18,cex=0.5,col="blue")
+points(d_ceu$freq,d_ceu$aa_freq,pch=18,cex=0.5,col="red")
+lines(lowess(d_ceu$freq,d_ceu$AA_freq,f=1/5),lty=2, lwd=3,col="green")
+lines(lowess(d_ceu$freq,d_ceu$Aa_freq,f=1/5),lty=2, lwd=3,col="steelblue")
+lines(lowess(d_ceu$freq,d_ceu$aa_freq,f=1/5),lty=2, lwd=3,col="firebrick")
+```
+
+Question 4: 
+Repeat these above steps for the YRI and combined YRI and CEU data.
+
+YRI
+```{r}
+plot(d_yri$freq,d_yri$AA_freq,pch=18,cex=0.5,col="darkolivegreen4",xlim=c(0,1),ylim=c(0,1),xlab="allele frequency",ylab="genotype frequency")
+points(d_yri$freq,d_yri$Aa_freq,pch=18,cex=0.5,col="royalblue")
+points(d_yri$freq,d_yri$aa_freq,pch=18,cex=0.5,col="indianred")
+lines(lowess(d_yri$freq,d_yri$AA_freq,f=1/5),lty=2, lwd=3,col="forestgreen")
+lines(lowess(d_yri$freq,d_yri$Aa_freq,f=1/5),lty=2, lwd=3,col="royalblue3")
+lines(lowess(d_yri$freq,d_yri$aa_freq,f=1/5),lty=2, lwd=3,col="firebrick")
+```
+
+
+CEU_YRI
+```{r}
+plot(d_ceu_yri$freq,d_ceu_yri$AA_freq,pch=18,cex=0.5,col="green",xlim=c(0,1),ylim=c(0,1),xlab="allele frequency",ylab="genotype frequency")
+points(d_ceu_yri$freq,d_ceu_yri$Aa_freq,pch=18,cex=0.5,col="cyan")
+points(d_ceu_yri$freq,d_ceu_yri$aa_freq,pch=18,cex=0.5,col="coral")
+lines(lowess(d_ceu_yri$freq,d_ceu_yri$AA_freq,f=1/5),lty=2, lwd=3,col="forestgreen")
+lines(lowess(d_ceu_yri$freq,d_ceu_yri$Aa_freq,f=1/5),lty=2, lwd=3,col="royalblue3")
+lines(lowess(d_ceu_yri$freq,d_ceu_yri$aa_freq,f=1/5),lty=2, lwd=3,col="firebrick")
+```
+
+
+
+Problem 2: Calculating Fst
+
+Load the file combined_YRICEU.txt as shown below, which contains both the CEU and YRI genotype counts
+for each SNP.
+
+```{r}
+library(eve102)
+d_comb <- read.table(eve102_data("combined_YRICEU.txt"), header=TRUE)
+head(d_comb)
+```
+
+Question 1:
+With this data, calculate the mean expected heterozygosity (i.e. from allele frequencies) in
+European and African samples (CEU and YRI, respectively) separately.
+
+CEU
+```{r}
+freqs_CEUA <- (d_comb$AA_CEU+d_comb$Aa_CEU/2)/d_comb$total_CEU
+freqs_CEUa <- (d_comb$aa_CEU+d_comb$Aa_CEU/2)/d_comb$total_CEU
+Hs_CEU <- mean(2*(freqs_CEUA)*(freqs_CEUa))
+Hs_CEU
+```
+
+YRI
+```{r}
+freqs_YRIA <- (d_comb$AA_YRI+d_comb$Aa_YRI/2)/d_comb$total_YRI
+freqs_YRIa <- (d_comb$aa_YRI+d_comb$Aa_YRI/2)/d_comb$total_YRI
+Hs_YRI <- mean(2*(freqs_YRIA)*(freqs_YRIa))
+Hs_YRI
+```
+
+Question 2:
+Calculate Fst for the European population relative to the combined frequency. 
+(average heterozygosity across loci and calculate Fst)
+
+Total Heterozygosity
+```{r}
+p_tot <- (freqs_YRIA+freqs_CEUA)/2
+q_tot <- (freqs_YRIa+freqs_CEUa)/2
+H_tot <- mean(2*q_tot*p_tot)
+H_tot
+```
+
+
+Fst for CEU
+```{r}
+Fst_CEU <-1-(Hs_CEU/H_tot)
+Fst_CEU
+```
+
+
+Question 3:
+Calculate Fst for the African population relative to the combined frequency.
+
+Fst for YRI
+```{r}
+Fst_YRI <- 1-(Hs_YRI/H_tot)
+Fst_YRI
+```
+
+
+Question 4: 
+Take the average of these two Fsts.
+
+```{r}
+Fst_comb <- (Fst_CEU+Fst_YRI)/2
+Fst_comb
+```
+
+Question 5: 
+Your calculated Fst is the inbreeding coefficient, giving the average reduction of heterozygosity in the sub-populations relative to the total population. The expected proportion of heterozygotes with inbreeding is given by the generalized Hardy-Weinberg equation (equation 3, page 9 in the course notes: [(1-F)2pq].
+Using the generalized Hardy-Weinberg equilibrium, and your calculated Fst, plot a line for the expected number of heterozygotes as a function of the allele frequency 
+
+```{r}
+gen_HW <- (1-Fst_comb)*2*p_tot*q_tot
+plot(d_ceu_yri$freq,d_ceu_yri$AA_freq,pch=18,cex=0.5,col="green",xlim=c(0,1),ylim=c(0,1),xlab="allele frequency",ylab="genotype frequency")
+points(d_ceu_yri$freq,d_ceu_yri$Aa_freq,pch=18,cex=0.5,col="cyan")
+points(d_ceu_yri$freq,d_ceu_yri$aa_freq,pch=18,cex=0.5,col="coral")
+lines(lowess(d_ceu_yri$freq,d_ceu_yri$AA_freq,f=1/5),lty=2, lwd=3,col="forestgreen")
+lines(lowess(d_ceu_yri$freq,d_ceu_yri$Aa_freq,f=1/5),lty=2, lwd=3,col="royalblue3")
+lines(lowess(d_ceu_yri$freq,d_ceu_yri$aa_freq,f=1/5),lty=2, lwd=3,col="firebrick")
+lines(lowess(p_tot,gen_HW,f=1/5),lty=1,lwd=3,col="orchid4")
+```

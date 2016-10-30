@@ -1,0 +1,108 @@
+---
+title: "Discussion 2"
+author: "Jill Marzolino"
+date: "October 4, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+#NOTES
+
+##Generalized HW
+HW doesn't hold when there's deviation from random mating: ie. inbreeding
+p <- AA
+q <- aa
+F <- probability of sampling 2 alleles inbred by descent (IBD)
+homozygotes
+heterozygotes
+autozygotes <- AA due to IBD alleles
+get an autozygote by:
+Fp+(1-F)*p^2
+
+aa <- F(1-p)+(1-F)*(1-p)^2
+Aa <- (1-F)2p(1-p)
+everything reduces to HW if F is 0
+if F>0 then there's a decrease in heterozygosity
+
+Aa <- f_12
+F statistics come from comparing to refrence populations
+
+what does it mean to be inbred: you sample someone from Britain and someone from somewhere else and look at their relatedness
+2 people from Britain will be more inbred than one from Britain and one from Africa
+F_IS <- 1-[f_12/2*p_s*q_s]
+F_IT <- 1-[f_12/2*p_s*q_s]
+F_ST <- 1-[2*p_s*q_s/2*p_t*q_t]
+(1-F_IT)=(1-F_IS)*(1-F_ST)
+genetic differentiation is gretest within a population than it is between subpopulations
+
+
+#Linkage Disequilibrium
+##Random Variable (rv)
+Events <- a variable
+event:  variable:   prob
+H           1         p
+T           0       (1-p)
+
+for continuously distributed traits: the P(being 6'2) is 0
+P(a</=X</=b)=f(integral)f(x)dx
+P(50<y<80)=Z(summation)p(x)
+
+variance
+V(x)=summation(x_i-u_x)^2*p(x=x_i)
+v(ax+b)=a^2*V(x)
+
+
+E(ax+b)=aE(x)+b
+
+
+if events are dependent: do not multiply
+P(x,y)=/= p(x)*p(y)
+only if events are independent 
+
+
+P(x)=summation P(X=x,Y=y)
+, means and in joint distribution speak
+that x AND all possible y's
+
+
+#Linkage Disequilibrium (LD)
+D=P_AB-p_a*p_b
+observed-expected
+
+coupling gametes: AB and ab
+repulsion gamets: Ab and aB
+
+If D>0 excess of coupling gametes
+D<0 excess of repulsion gametes to coupling gametes
+D=0 if they assort independently
+
+covariance(x,y)=E[(x-u_x)*(y-u_y)]
+summarizes linear dependence
+no covariance =/=no dependence
+doesn't mean they're independent
+dependence can be curvilinear not linear!
+the F statistics, covariance between gametes in a zygote; what does it tell us about the pop? IBD, how you get dependence
+D is a direct measure of covariance, as is F
